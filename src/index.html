@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./js/Cep.js"></script>
+    <script src="./js/Client.js"></script>
+    <script src="./js/User.js"></script>
+    <script src="./js/Service.js"></script>
+</head>
+<body>
+    <h1>Serviços</h1>
+    <button onclick="c()">Carregar</button>
+    <div id="dt"></div>
+    <script>
+        // async function c(){
+        //     const cep = new Cep();
+        //     // const cep = getCep();
+        //     const ret = await cep.getAddress("89260854", "80");
+        //     // console.log(ret);
+        //     // alert(ret)
+        //     document.getElementById('dt').innerHTML = ret
+        // }
+        // c();
+        
+        async function c(){
+            document.getElementById('dt').innerHTML = "Carregando...";
+            const cep = new Cep();
+            const dataC = {
+                id: '111',
+                name: 'Tony',
+                cep: '01001000',
+                houseNumber: 'Nº 80 - casa 1',
+                email: 'tony@gmail.com',
+                phone: '99 99999-9999'
+            }
+            const dataC2 = {
+                id: '222',
+                name: 'Robson',
+                cep: '89260854',
+                houseNumber: 'Nº 80 - casa 1',
+                email: 'robson@gmail.com',
+                phone: '88 88888-8888'
+            }
+            const dataC3 = {
+                id: '333',
+                name: 'Camila',
+                cep: '89260854',
+                houseNumber: 'Nº 80 - casa 1',
+                email: 'camila@gmail.com',
+                phone: '77 77777-7777'
+            }
+            const ar = [dataC, dataC2, dataC3];
+            document.getElementById('dt').innerHTML = "";
+            for(let i=0; i<ar.length; i++){
+                const client = new Client(ar[i]);
+                const dd = await client.getData(new Cep());
+                document.getElementById('dt').innerHTML += '<div style="padding: 10px;" onclick=\'services('+JSON.stringify(ar[i])+')\'>'+dd+'</div>';
+            }
+        }
+        // c();
+
+        let nn = {
+                    name: 'Robson',
+                    email: 'robsonfdfarias@gmail.com',
+                    fone: 'string',
+                    password: 'string',
+                    photo: 'string',
+                    profession: 'string'
+                }
+        const user = new User(nn);
+        console.log(user.getData())
+        
+        function services(client){
+            console.log(client.name)
+            console.log(client)
+            const ser = {
+                startDate: '20224-09-04',
+                endDate: '20224-09-04', //Data prevista para a conclusão do serviço
+                postDate: '20224-09-04',
+                typeOfService: 1,
+                description: 'Criação de site de vitrine de serviços.',
+                idClient: client.id,
+                idUser: user.id, //quem fez o atendimento
+                serviceValue: 300.20,
+                complited: false,
+                comment: ''
+            }
+            const service = new Service(ser);
+            service.setClient(client)
+            service.setUser(user);
+            console.log(service.client.name)
+            console.log(service.user.email)
+            console.log(service.description)
+        }
+    </script>
+</body>
+</html>
